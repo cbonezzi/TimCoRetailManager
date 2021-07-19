@@ -18,7 +18,7 @@ namespace TRMDesktopUI.ViewModels
 			set
 			{
 				_userName = value;
-				NotifyOfPropertyChange(()=> UserName);
+				NotifyOfPropertyChange(() => UserName);
 				NotifyOfPropertyChange(() => CanLogIn);
 			}
 		}
@@ -29,7 +29,7 @@ namespace TRMDesktopUI.ViewModels
 			set
 			{
 				_password = value;
-				NotifyOfPropertyChange(()=> Password);
+				NotifyOfPropertyChange(() => Password);
 				NotifyOfPropertyChange(() => CanLogIn);
 			}
 		}
