@@ -32,7 +32,8 @@ namespace TRMDesktopUI
 			//know it all for this for this instance.
 			_container
 				.Singleton<IWindowManager, WindowManager>()
-				.Singleton<IEventAggregator, EventAggregator>();
+				.Singleton<IEventAggregator, EventAggregator>()
+				.Singleton<IApiHelper, ApiHelper>();
 
 			//using reflection at this point
 			//this is fine for now, but for the future, instead of wiring directly to class, we can
