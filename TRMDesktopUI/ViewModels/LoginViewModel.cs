@@ -45,12 +45,8 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				bool output = false;
+				bool output = ErrorMessage?.Length > 0;
 
-				if (ErrorMessage?.Length > 0)
-				{
-					output = true;
-				}
 				return output;
 			}
 		}
@@ -73,12 +69,7 @@ namespace TRMDesktopUI.ViewModels
 		{
 			get
 			{
-				bool output = false;
-
-				if (UserName?.Length > 0 && Password?.Length > 0)
-				{
-					output = true;
-				}
+				bool output = UserName?.Length > 0 && Password?.Length > 0;
 
 				return output;
 			}
