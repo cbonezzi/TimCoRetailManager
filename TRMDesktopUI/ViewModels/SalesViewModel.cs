@@ -5,11 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using TRMDesktopUI.Library.Api;
+using TRMDesktopUI.Library.Models;
 
 namespace TRMDesktopUI.ViewModels
 {
 	public class SalesViewModel : Screen
 	{
+		private IProductEndpoint _productEndpoint;
+
+		public SalesViewModel(
+			IProductEndpoint productEndpoint)
+		{
+			_productEndpoint = productEndpoint;
+		}
+
+		protected override async void OnViewLoaded(object view)
+		{
+			base.OnViewLoaded(view);
+			await LoadProducts();
+		}
+
+		private async Task LoadProducts()
+		{
+			var productList = await _productEndpoint.GetAll();
+			Products = new BindingList<ProductModel>(productList);
+		}
+
 		public string SubTotal
 		{
 			get
@@ -36,9 +58,9 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		private BindingList<string> _products;
+		private BindingList<ProductModel> _products;
 
-		public BindingList<string> Products
+		public BindingList<ProductModel> Products
 		{
 			get { return _products; }
 			set

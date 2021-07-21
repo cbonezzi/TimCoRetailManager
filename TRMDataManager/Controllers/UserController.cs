@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
 using TRMDataManager.Library.DataAccess;
 using TRMDataManager.Library.Models;
 

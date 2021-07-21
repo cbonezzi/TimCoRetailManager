@@ -23,6 +23,16 @@ namespace TRMDesktopUI.Library.Api
 			_loggedInUser = loggedInUser;
 		}
 
+		//this will be a readonly property of the HttpClient
+		//that will be available for the application to use
+		public HttpClient ApiClient
+		{
+			get
+			{
+				return _apiClient;
+			}
+		}
+
 		private void InitializeClient()
 		{
 			string api = ConfigurationManager.AppSettings["api"];
