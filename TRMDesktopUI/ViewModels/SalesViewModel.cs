@@ -10,30 +10,6 @@ namespace TRMDesktopUI.ViewModels
 {
 	public class SalesViewModel : Screen
 	{
-		private BindingList<string> _products;
-
-		public BindingList<string> Products
-		{
-			get { return _products; }
-			set
-			{
-				_products = value;
-				NotifyOfPropertyChange(()=> Products);
-			}
-		}
-
-		private BindingList<string> _cart;
-
-		public BindingList<string> Cart
-		{
-			get { return _cart; }
-			set
-			{
-				_cart = value;
-				NotifyOfPropertyChange(() => Cart);
-			}
-		}
-
 		public string SubTotal
 		{
 			get
@@ -60,9 +36,36 @@ namespace TRMDesktopUI.ViewModels
 			}
 		}
 
-		private string _itemQuantity;
+		private BindingList<string> _products;
 
-		public string ItemQuantity
+		public BindingList<string> Products
+		{
+			get { return _products; }
+			set
+			{
+				_products = value;
+				NotifyOfPropertyChange(()=> Products);
+			}
+		}
+
+		private BindingList<string> _cart;
+
+		public BindingList<string> Cart
+		{
+			get { return _cart; }
+			set
+			{
+				_cart = value;
+				NotifyOfPropertyChange(() => Cart);
+			}
+		}
+
+
+		//putting the proper type
+		//caliburn does a validation the data entered
+		private int _itemQuantity;
+
+		public int ItemQuantity
 		{
 			get { return _itemQuantity; }
 			set
