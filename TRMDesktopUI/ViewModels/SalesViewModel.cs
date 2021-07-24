@@ -1,10 +1,9 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using TRMDataManager.Library;
 using TRMDesktopUI.Library.Api;
-using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
 
 namespace TRMDesktopUI.ViewModels
@@ -12,14 +11,17 @@ namespace TRMDesktopUI.ViewModels
 	public class SalesViewModel : Screen
 	{
 		private IProductEndpoint _productEndpoint;
-		private IConfigHelper _configHelper;
+		private ISaleEndpoint _saleEndpoint;
+		//private IConfigHelper _configHelper;
 
 		public SalesViewModel(
 			IProductEndpoint productEndpoint,
-			IConfigHelper configHelper)
+			ISaleEndpoint saleEndpoint)
+			//IConfigHelper configHelper)
 		{
 			_productEndpoint = productEndpoint;
-			_configHelper = configHelper;
+			_saleEndpoint = saleEndpoint;
+			//_configHelper = configHelper;
 		}
 
 		protected override async void OnViewLoaded(object view)
@@ -57,7 +59,7 @@ namespace TRMDesktopUI.ViewModels
 		private decimal CalculateTax()
 		{
 			decimal taxAmount = 0;
-			decimal taxRate = _configHelper.GetTaxRate()/100;
+			decimal taxRate = ConfigHelper.GetTaxRate()/100;
 
 			taxAmount = Cart
 				.Where(x => x.Product.IsTaxable)
@@ -189,6 +191,7 @@ namespace TRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => SubTotal);
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
 		}
 
 		public bool CanRemoveFromCart
@@ -214,12 +217,28 @@ namespace TRMDesktopUI.ViewModels
 			{
 				bool output = false;
 
+				if (Cart.Count > 0)
+				{
+					output = true;
+				}
+
 				return output;
 			}
 		}
 
-		public void CheckOut()
+		public async Task CheckOut()
 		{
+			SaleModel sale = new SaleModel();
+			foreach (var item in Cart)
+			{
+				sale.SaleDetails.Add(new SaleDetailModel
+				{
+					ProductId = item.Product.Id,
+					Quantity = item.QuantityInCart
+				});
+			}
+
+			await _saleEndpoint.PostSale(sale);
 
 		}
 	}

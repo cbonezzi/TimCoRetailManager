@@ -29,7 +29,8 @@ namespace TRMDesktopUI
 		protected override void Configure()
 		{
 			_container.Instance(_container)
-				.PerRequest<IProductEndpoint, ProductEndpoint>();
+				.PerRequest<IProductEndpoint, ProductEndpoint>()
+				.PerRequest<ISaleEndpoint, SaleEndpoint>();
 
 			//central location for both windowmanager and eventaggregator
 			//this will keep a central location for these important info
@@ -38,7 +39,6 @@ namespace TRMDesktopUI
 				.Singleton<IWindowManager, WindowManager>()
 				.Singleton<IEventAggregator, EventAggregator>()
 				.Singleton<ILoggedInUserModel, LoggedInUserModel>()
-				.Singleton<IConfigHelper, ConfigHelper>()
 				.Singleton<IApiHelper, ApiHelper>();
 
 			//using reflection at this point
