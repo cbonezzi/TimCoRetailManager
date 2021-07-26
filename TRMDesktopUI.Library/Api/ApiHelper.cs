@@ -63,6 +63,11 @@ namespace TRMDesktopUI.Library.Api
 			}
 		}
 
+		public void LogOffUser()
+		{
+			_apiClient.DefaultRequestHeaders.Clear();
+		}
+
 		public async Task GetLoggedInUserInfo(string token)
 		{
 			//for every call that we make add the bearer token to the header.
