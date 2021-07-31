@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using AutoMapper;
 using Caliburn.Micro;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using AutoMapper;
+using System.Windows;
 using TRMDataManager.Library;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Models;
@@ -18,25 +20,53 @@ namespace TRMDesktopUI.ViewModels
 		private ISaleEndpoint _saleEndpoint;
 
 		private IMapper _mapper;
+		private readonly StatusInfoViewModel _status;
+		private readonly IWindowManager _window;
 
 		//private IConfigHelper _configHelper;
 
 		public SalesViewModel(
 			IProductEndpoint productEndpoint,
 			ISaleEndpoint saleEndpoint,
-			IMapper mapper)
-			//IConfigHelper configHelper)
+			IMapper mapper,
+			StatusInfoViewModel status,
+			IWindowManager window)
+		//IConfigHelper configHelper)
 		{
 			_productEndpoint = productEndpoint;
 			_saleEndpoint = saleEndpoint;
 			_mapper = mapper;
+			_status = status;
+			_window = window;
 			//_configHelper = configHelper;
 		}
 
 		protected override async void OnViewLoaded(object view)
 		{
 			base.OnViewLoaded(view);
-			await LoadProducts();
+			try
+			{
+				await LoadProducts();
+			}
+			catch (Exception ex)
+			{
+				dynamic settings = new ExpandoObject();
+				settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+				settings.ResizeMode = ResizeMode.NoResize;
+				settings.Title = "System Error";
+
+				if (ex.Message == "Unauthorized")
+				{
+					_status.UpdateMessage("Unauthorized Access", "You do not have permission to interact with the Sales Form");
+					await _window.ShowDialogAsync(_status, null, settings);
+				}
+				else
+				{
+					_status.UpdateMessage("Fatal Exception", ex.Message);
+					await _window.ShowDialogAsync(_status, null, settings);
+				}
+				TryCloseAsync();
+			}
 		}
 
 		private async Task LoadProducts()
@@ -65,11 +95,11 @@ namespace TRMDesktopUI.ViewModels
 
 			return subTotal;
 		}
-		
+
 		private decimal CalculateTax()
 		{
 			decimal taxAmount = 0;
-			decimal taxRate = ConfigHelper.GetTaxRate()/100;
+			decimal taxRate = ConfigHelper.GetTaxRate() / 100;
 
 			taxAmount = Cart
 				.Where(x => x.Product.IsTaxable)
