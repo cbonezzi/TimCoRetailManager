@@ -6,17 +6,24 @@
         xmlns:local="clr-namespace:TRMDesktopUI.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="550" Width="800">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top" FontSize="18">
-            <MenuItem Header="_File">
-	            <MenuItem x:Name="ExitApplication" Header="E_xit" />
+	<DockPanel>
+		<Menu DockPanel.Dock="Top" FontSize="18">
+			<MenuItem Header="_File">
+				<MenuItem x:Name="ExitApplication" Header="E_xit" />
+			</MenuItem>
+			<MenuItem Header="_Users">
+				<MenuItem x:Name="UserManagement" Header="User_Management" />
 			</MenuItem>
 			<MenuItem Header="_Account" Visibility="{Binding IsLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <MenuItem x:Name="LogOut" Header="_Log Out" />
-            </MenuItem>
-        </Menu>
-        <Grid>
-			<ContentControl x:Name="ActiveItem" Margin="20 5 20 20" />
-        </Grid>
-    </DockPanel>
+				<MenuItem x:Name="LogOut" Header="_Log Out" />
+			</MenuItem>
+		</Menu>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="67*"/>
+				<ColumnDefinition Width="330*"/>
+			</Grid.ColumnDefinitions>
+			<ContentControl x:Name="ActiveItem" Margin="20,5,19.6,20.2" Grid.ColumnSpan="2" />
+		</Grid>
+	</DockPanel>
 </Window>

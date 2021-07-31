@@ -86,7 +86,7 @@ namespace TRMDesktopUI.Library.Api
 					_loggedInUser.FirstName = result.FirstName;
 					_loggedInUser.Id = result.Id;
 					_loggedInUser.LastName = result.LastName;
-					_loggedInUser.Token = result.Token;
+					_loggedInUser.Token = token;
 				}
 				else
 				{

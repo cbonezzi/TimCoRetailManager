@@ -52,7 +52,8 @@ namespace TRMDesktopUI
 
 			_container.Instance(_container)
 				.PerRequest<IProductEndpoint, ProductEndpoint>()
-				.PerRequest<ISaleEndpoint, SaleEndpoint>();
+				.PerRequest<ISaleEndpoint, SaleEndpoint>()
+				.PerRequest<IUserEndpoint, UserEndpoint>();
 
 			//central location for both windowmanager and eventaggregator
 			//this will keep a central location for these important info
