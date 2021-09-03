@@ -20,6 +20,7 @@ namespace TRMApi.Controllers
 		}
 
 		// GET api/values
+		[HttpGet]
 		public List<ProductModel> Get()
 		{
 			ProductData data = new ProductData(_config);

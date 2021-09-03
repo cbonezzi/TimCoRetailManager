@@ -65,7 +65,7 @@ namespace TRMDesktopUI.ViewModels
 					_status.UpdateMessage("Fatal Exception", ex.Message);
 					await _window.ShowDialogAsync(_status, null, settings);
 				}
-				TryCloseAsync();
+				await TryCloseAsync();
 			}
 		}
 

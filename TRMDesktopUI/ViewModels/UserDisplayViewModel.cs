@@ -46,7 +46,7 @@ namespace TRMDesktopUI.ViewModels
 
 				//creates a new binding list of strings which will hold the role name
 				SelectedUserRoles = new BindingList<string>(value.Roles.Select(x => x.Value).ToList());
-				LoadRoles();
+				_ = LoadRoles();
 
 				NotifyOfPropertyChange(() => SelectedUser);
 			}
@@ -157,7 +157,7 @@ namespace TRMDesktopUI.ViewModels
 					_status.UpdateMessage("Fatal Exception", ex.Message);
 					await _window.ShowDialogAsync(_status, null, settings);
 				}
-				TryCloseAsync();
+				await TryCloseAsync();
 			}
 		}
 

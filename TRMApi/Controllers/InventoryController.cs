@@ -19,13 +19,14 @@ namespace TRMApi.Controllers
 			_config = config;
 		}
 
+		[HttpGet]
 		[Authorize(Roles = "Manager,Admin")] //this is an OR operation
 		public List<InventoryModel> Get()
 		{
 			InventoryData data = new InventoryData(_config);
 			return data.GetInventory();
 		}
-
+		[HttpPost]
 		[Authorize(Roles = "Admin")]
 		public void Post(InventoryModel item)
 		{

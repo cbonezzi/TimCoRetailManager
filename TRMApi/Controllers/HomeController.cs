@@ -25,12 +25,13 @@ namespace TRMApi.Controllers
 			_userManager = userManager;
 		}
 
+		[HttpGet]
 		public IActionResult Index()
 		{
 			return View();
 		}
 
-		public async Task<IActionResult> Privacy()
+		public IActionResult Privacy()
 		{
 			//can be used for initialization of the roles
 			//string[] roles = {"Admin", "Manager", "Cashier"};
