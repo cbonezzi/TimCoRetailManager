@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using TRMApi.Data;
+using TRMDataManager.Library.DataAccess;
+using TRMDataManager.Library.Internal.DataAccess;
 
 namespace TRMApi
 {
@@ -33,6 +35,14 @@ namespace TRMApi
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+
+			// Personal services
+			services.AddTransient<IInventoryData, InventoryData>();
+			services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+			services.AddTransient<IProductData, ProductData>();
+			services.AddTransient<ISaleData,SaleData>();
+			services.AddTransient<IUserData, UserData>();
+
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = "JwtBearer";

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
-	internal class SqlDataAccess : IDisposable
+	public class SqlDataAccess : IDisposable, ISqlDataAccess
 	{
 		public SqlDataAccess(IConfiguration config)
 		{
@@ -27,6 +27,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
 		{
 			string connectionString = GetConnectionString(connectionStringName);
 
+			// we can leave this alone because this has a firm dependency on SqlConnection
 			using (IDbConnection cnn = new SqlConnection(connectionString))
 			{
 				List<T> rows = cnn.Query<T>(storeProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
@@ -38,6 +39,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
 		{
 			string connectionString = GetConnectionString(connectionStringName);
 
+			// we can leave this alone because this has a firm dependency on SqlConnection
 			using (IDbConnection cnn = new SqlConnection(connectionString))
 			{
 				cnn.Execute(storeProcedure, parameters, commandType: CommandType.StoredProcedure);
@@ -50,9 +52,9 @@ namespace TRMDataManager.Library.Internal.DataAccess
 		public void StartTransaction(string connectionStringName)
 		{
 			string connectionString = GetConnectionString(connectionStringName);
-			
+
 			_connection = new SqlConnection(connectionString);
-			
+
 			_connection.Open();
 
 			_transaction = _connection.BeginTransaction();
@@ -89,7 +91,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
 		{
 			_transaction?.Rollback();
 			_connection?.Close();
-			
+
 			isClosed = true;
 		}
 
