@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using TRMDesktopUI.EventModels;
@@ -93,7 +94,7 @@ namespace TRMDesktopUI.ViewModels
 
 
 				//brodcasting the event
-				await _events.PublishOnUIThreadAsync(new LogOnEvent());
+				await _events.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
 			}
 			catch (Exception ex)
 			{
