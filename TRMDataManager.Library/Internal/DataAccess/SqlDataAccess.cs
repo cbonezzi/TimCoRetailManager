@@ -3,22 +3,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
 	public class SqlDataAccess : IDisposable, ISqlDataAccess
 	{
 		private readonly ILogger _logger;
-		public SqlDataAccess(IConfiguration config, ILogger logger)
+		public SqlDataAccess(IConfiguration config, ILogger<SqlDataAccess> logger)
 		{
-			_config = config;
 			_logger = logger;
+			_config = config;
 		}
 
 		public string GetConnectionString(string name)
