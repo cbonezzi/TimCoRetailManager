@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using TRMApi.Data;
 using TRMApi.Models;
 using TRMDataManager.Library.DataAccess;
@@ -21,11 +21,12 @@ namespace TRMApi.Controllers
 		private readonly ApplicationDbContext _context;
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly IUserData _userData;
+		private readonly ILogger<UserController> _logger;
 
 		public UserController(ApplicationDbContext context, 
 			UserManager<IdentityUser> userManager,
-			IConfiguration config,
-			IUserData userData)
+			IUserData userData,
+			ILogger<UserController> logger)
 		{
 			_context = context;
 			_userManager = userManager;
@@ -88,7 +89,15 @@ namespace TRMApi.Controllers
 		[Route("Admin/AddRole")]
 		public async Task AddRole(UserRolePairModel pairing)
 		{
+
+			string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var loggedInUser = _userData.GetUserById(loggedInUserId).First();
+
 			var user = await _userManager.FindByIdAsync(pairing.UserId);
+
+			_logger.LogInformation("Admin {Admin} added user {User} to role {Role}",
+				loggedInUserId, user.Id, pairing.RoleName);
+
 			await _userManager.AddToRoleAsync(user, pairing.RoleName);
 		}
 
@@ -98,7 +107,18 @@ namespace TRMApi.Controllers
 		[Route("Admin/RemoveRole")]
 		public async Task RemoveRole(UserRolePairModel pairing)
 		{
+
+			string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var loggedInUser = _userData.GetUserById(loggedInUserId).First();
+
 			var user = await _userManager.FindByIdAsync(pairing.UserId);
+
+			// this way we can use the structure logging such as Serilog to filter
+			// we don't use string interpolation because it will prevent us from using 
+			// structure logging easily for searching.
+			_logger.LogInformation("Admin {Admin} remove user {User} to role {Role}",
+				loggedInUserId, user.Id, pairing.RoleName);
+
 			await _userManager.RemoveFromRoleAsync(user, pairing.RoleName);
 		}
 	}
