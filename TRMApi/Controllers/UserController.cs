@@ -31,6 +31,7 @@ namespace TRMApi.Controllers
 			_context = context;
 			_userManager = userManager;
 			_userData = userData;
+			_logger = logger;
 		}
 
 		[HttpGet]
